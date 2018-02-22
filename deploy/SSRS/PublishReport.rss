@@ -1,0 +1,46 @@
+﻿' Original source from:
+' http://msftrsprodsamples.codeplex.com/SourceControl/latest#Kilimanjaro_November_CTP/Script Samples/PublishSampleReports.rss
+' Example usage:
+' rs -i PublishReport.rss -s localhost/ReportServer -e Mgmt2010
+'
+
+Dim definition As [Byte]() = Nothing
+Dim warnings As Warning() = Nothing
+
+Public Sub Main()
+
+   rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+   
+   ' Publish report
+   PublishReport("EmployeesReport")
+
+End Sub
+
+Public Sub PublishReport(ByVal reportName As String)
+   Try
+       Dim stream As FileStream = File.OpenRead(reportName + ".rdl")
+       definition = New [Byte](stream.Length - 1) {}
+       stream.Read(definition, 0, CInt(stream.Length))
+       stream.Close()
+
+   Catch e As IOException
+       Console.WriteLine(e.Message)
+   End Try
+
+   Try
+		rs.CreateCatalogItem("Report", reportName, "/", True, definition, Nothing, warnings)
+
+       If Not (warnings Is Nothing) Then
+           Dim warning As Warning
+           For Each warning In warnings
+               Console.WriteLine(warning.Message)
+           Next warning
+
+       Else
+           Console.WriteLine("Report: {0} published successfully with no warnings", reportName)
+       End If
+
+   Catch e As Exception
+       Console.WriteLine(e.Message)
+   End Try
+End Sub 

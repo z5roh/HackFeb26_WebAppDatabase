@@ -1,0 +1,502 @@
+{
+  "source": 0,
+  "id": 5,
+  "revision": 52,
+  "name": "301-WebAppDatabase",
+  "description": null,
+  "createdBy": {
+    "id": "92588aab-528a-40b5-939e-37095cc1cf3c",
+    "displayName": "Janne Mattila",
+    "uniqueName": "j18matti@mds.microsoft.com",
+    "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/92588aab-528a-40b5-939e-37095cc1cf3c",
+    "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=92588aab-528a-40b5-939e-37095cc1cf3c"
+  },
+  "createdOn": "2016-09-13T06:40:27.490Z",
+  "modifiedBy": {
+    "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+    "displayName": "Janne Mattila",
+    "uniqueName": "j18matti@microsoft.com",
+    "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+    "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+  },
+  "modifiedOn": "2017-09-29T11:41:11.010Z",
+  "path": "\\",
+  "variables": {
+    "AdminPassword": {
+      "value": null,
+      "isSecret": true
+    },
+    "ServicePrincipal": { "value": "67cb918b-31a7-4d98-aa04-096d6789b2a7" }
+  },
+  "variableGroups": [],
+  "environments": [
+    {
+      "id": 9,
+      "name": "Development",
+      "rank": 1,
+      "owner": {
+        "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "displayName": "Janne Mattila",
+        "uniqueName": "j18matti@microsoft.com",
+        "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+      },
+      "variables": {},
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 25
+          }
+        ]
+      },
+      "deployStep": {
+        "tasks": [],
+        "id": 30
+      },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 31
+          }
+        ]
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": "none" },
+            "skipArtifactsDownload": false,
+            "queueId": 2,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Run on agent",
+          "workflowTasks": [
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-dev-rg -VaultName webappdatabase-dev-kv -Location \"northeurope\" -AdminPassword (ConvertTo-SecureString -String \"$(AdminPassword)\" -Force -AsPlainText) -ServicePrincipal $(ServicePrincipal) -StorageName webappdatabasedevdata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            },
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-dev-rg -Location \"northeurope\" -VaultName webappdatabase-dev-kv -ApplicationFiles \"$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/app\" -StorageName webappdatabasedevdata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": false
+      },
+      "demands": [],
+      "conditions": [
+        {
+          "name": "ReleaseStarted",
+          "conditionType": 1,
+          "value": ""
+        }
+      ],
+      "executionPolicy": {
+        "concurrencyCount": 0,
+        "queueDepthCount": 0
+      },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {}
+    },
+    {
+      "id": 10,
+      "name": "QA",
+      "rank": 2,
+      "owner": {
+        "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "displayName": "Janne Mattila",
+        "uniqueName": "j18matti@microsoft.com",
+        "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+      },
+      "variables": {},
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": false,
+            "isNotificationOn": false,
+            "approver": {
+              "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+              "displayName": "Janne Mattila",
+              "uniqueName": "j18matti@microsoft.com",
+              "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+              "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+            },
+            "id": 54
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": 0,
+          "releaseCreatorCanBeApprover": true,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0
+        }
+      },
+      "deployStep": {
+        "tasks": [],
+        "id": 29
+      },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 32
+          }
+        ]
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": "none" },
+            "skipArtifactsDownload": false,
+            "queueId": 2,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Run on agent",
+          "workflowTasks": [
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-qa-rg -Location \"northeurope\" -VaultName webappdatabase-qa-kv -AdminPassword (ConvertTo-SecureString -String \"$(AdminPassword)\" -Force -AsPlainText) -ServicePrincipal $(ServicePrincipal) -StorageName webappdatabaseqadata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            },
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-qa-rg -Location \"northeurope\" -VaultName webappdatabase-qa-kv -ApplicationFiles \"$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/app\" -StorageName webappdatabaseqadata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": false
+      },
+      "demands": [],
+      "conditions": [],
+      "executionPolicy": {
+        "concurrencyCount": 0,
+        "queueDepthCount": 0
+      },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {}
+    },
+    {
+      "id": 11,
+      "name": "Production",
+      "rank": 3,
+      "owner": {
+        "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "displayName": "Janne Mattila",
+        "uniqueName": "j18matti@microsoft.com",
+        "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+        "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+      },
+      "variables": {},
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": false,
+            "isNotificationOn": false,
+            "approver": {
+              "id": "a45e08d4-3e5f-4e97-903e-10f0b829a454",
+              "displayName": "Janne Mattila",
+              "uniqueName": "j18matti@microsoft.com",
+              "url": "https://app.vssps.visualstudio.com/Adc677832-8a06-403e-99b2-994f0b2e69d0/_apis/Identities/a45e08d4-3e5f-4e97-903e-10f0b829a454",
+              "imageUrl": "https://jannemattilademo.visualstudio.com/_api/_common/identityImage?id=a45e08d4-3e5f-4e97-903e-10f0b829a454"
+            },
+            "id": 55
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": 0,
+          "releaseCreatorCanBeApprover": true,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0
+        }
+      },
+      "deployStep": {
+        "tasks": [],
+        "id": 28
+      },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 33
+          }
+        ]
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": "none" },
+            "skipArtifactsDownload": false,
+            "queueId": 2,
+            "demands": [],
+            "enableAccessToken": false,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Run on agent",
+          "workflowTasks": [
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-prod-rg -Location \"northeurope\" -VaultName webappdatabase-prod-kv -AdminPassword (ConvertTo-SecureString -String \"$(AdminPassword)\" -Force -AsPlainText) -ServicePrincipal $(ServicePrincipal) -StorageName webappdatabaseproddata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            },
+            {
+              "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+              "version": "2.*",
+              "name": "Azure PowerShell script: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+              "enabled": true,
+              "alwaysRun": false,
+              "continueOnError": false,
+              "timeoutInMinutes": 0,
+              "definitionType": "task",
+              "overrideInputs": {},
+              "condition": "succeeded()",
+              "inputs": {
+                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                "ConnectedServiceName": "",
+                "ConnectedServiceNameARM": "47c200e3-6093-4684-9523-971f1f901447",
+                "ScriptType": "FilePath",
+                "ScriptPath": "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1",
+                "Inline": "# You can write your azure powershell scripts inline here. \n# You can also pass predefined and custom variables to this script using arguments",
+                "ScriptArguments": "-ResourceGroupName webappdatabase-prod-rg -Location \"northeurope\" -VaultName webappdatabase-prod-kv -ApplicationFiles \"$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/app\" -StorageName webappdatabaseproddata",
+                "TargetAzurePs": "LatestVersion",
+                "CustomTargetAzurePs": ""
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": false
+      },
+      "demands": [],
+      "conditions": [
+        {
+          "name": "QA",
+          "conditionType": 2,
+          "value": "4"
+        }
+      ],
+      "executionPolicy": {
+        "concurrencyCount": 0,
+        "queueDepthCount": 0
+      },
+      "schedules": [],
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {}
+    }
+  ],
+  "artifacts": [
+    {
+      "sourceId": "b162c205-ea78-4bfa-807a-19e027ccc9ef:4",
+      "type": "Build",
+      "alias": "301-WebAppDatabase-master",
+      "definitionReference": {
+        "artifactSourceDefinitionUrl": {
+          "id": "https://jannemattilademo.visualstudio.com/_permalink/_build/index?collectionId=d16bb96a-a9de-4052-abe3-18bde0abb46c&projectId=b162c205-ea78-4bfa-807a-19e027ccc9ef&definitionId=4",
+          "name": ""
+        },
+        "defaultVersionBranch": {
+          "id": "",
+          "name": ""
+        },
+        "defaultVersionSpecific": {
+          "id": "",
+          "name": ""
+        },
+        "defaultVersionTags": {
+          "id": "",
+          "name": ""
+        },
+        "defaultVersionType": {
+          "id": "selectDuringReleaseCreationType",
+          "name": "Specify at the time of release creation"
+        },
+        "definition": {
+          "id": "4",
+          "name": "301-WebAppDatabase-master"
+        },
+        "project": {
+          "id": "b162c205-ea78-4bfa-807a-19e027ccc9ef",
+          "name": "AzureDemo"
+        }
+      },
+      "isPrimary": true
+    }
+  ],
+  "triggers": [
+    {
+      "artifactAlias": "301-WebAppDatabase-master",
+      "triggerConditions": [],
+      "triggerType": 1
+    }
+  ],
+  "releaseNameFormat": "301-$(rev:r)",
+  "url": "https://jannemattilademo.vsrm.visualstudio.com/b162c205-ea78-4bfa-807a-19e027ccc9ef/_apis/Release/definitions/5",
+  "_links": {
+    "self": { "href": "https://jannemattilademo.vsrm.visualstudio.com/b162c205-ea78-4bfa-807a-19e027ccc9ef/_apis/Release/definitions/5" },
+    "web": { "href": "https://jannemattilademo.visualstudio.com/b162c205-ea78-4bfa-807a-19e027ccc9ef/_release?definitionId=5" }
+  },
+  "tags": [],
+  "properties": {}
+}

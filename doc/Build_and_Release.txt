@@ -1,0 +1,39 @@
+BUILD (Using "Hosted" agent)
+----------------------------
+
+1. step: NuGet
+Command: Restore
+
+2. step: Visual Studio Build
+Visual Studio Version: Visual Studio 2015
+MSBuild arguments: /p:DeployOnBuild=true /p:PublishProfile=Publish.pubxml
+
+3. step: Publish Artifact
+Path to publish: deploy
+Artifact name: deploy
+
+4. step: Publish Artifact
+Path to publish: src/WebApp/Publish
+Artifact name: app
+
+
+RELEASE
+-------
+Release variables:
+------------------
+AdminPassword: <invent your own password>
+ServicePrincipal: <get your service principal>
+
+1. step: Azure PowerShell
+Script path: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy-initial.ps1
+Script arguments: -ResourceGroupName webappdatabase-dev-rg -VaultName webappdatabase-dev-kv -Location "northeurope" -AdminPassword (ConvertTo-SecureString -String "$(AdminPassword)" -Force -AsPlainText) -ServicePrincipal $(ServicePrincipal) -StorageName webappdatabasedevdata
+******************************************************************
+*** NOTE: You have to fix above arguments for your environment :-)
+******************************************************************
+
+2. step: Azure PowerShell
+Script path: $(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/deploy/deploy.ps1
+Script arguments: -ResourceGroupName webappdatabase-dev-rg -Location "northeurope" -VaultName webappdatabase-dev-kv -ApplicationFiles "$(System.DefaultWorkingDirectory)/301-WebAppDatabase-master/app" -StorageName webappdatabasedevdata
+******************************************************************
+*** NOTE: You have to fix above arguments for your environment :-)
+******************************************************************
